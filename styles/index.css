@@ -90,22 +90,6 @@ margin-left: 1.5rem;
 /* margin-right: 1.5rem; */
 }
 
-.temp-red {
-    color: red;
-}
-.temp-orange {
-    color: orange;
-}
-.temp-yellow {
-    color: yellow;
-}
-.temp-green {
-    color: green;
-}
-.temp-teal {
-    color: blue;
-}
-
 .temperature__controls {
 display: flex;
 flex-direction: column;
@@ -128,6 +112,8 @@ justify-content: space-between;
 
 border-radius: 8px;
 font-size: 2em;
+
+color: white;
 }
 
 .city-name__reset-btn {
