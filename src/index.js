@@ -45,26 +45,6 @@ tempDecrease.addEventListener("click", () => {
 // Initialize the temperature and landscape display
 updateTemperature();
 
-// wave 3 & 6
-document.addEventListener("DOMContentLoaded", () => {
-    const cityInput = document.getElementById("cityNameInput");
-    const cityDisplay = document.getElementById("headerCityName");
-    const resetButton = document.getElementById("cityNameReset");
-    const currentTempButton = document.getElementById("currentTempButton");
-
-    cityInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            const cityName = cityInput.value;
-            cityDisplay.textContent = cityName;
-        }
-    });
-
-    resetButton.addEventListener("click", () => {
-        cityInput.value = "";
-        cityDisplay.textContent = "";
-    });
-});
-
 // Wave 5 
 // change sky display when select from dropdown list
 const skySelect = document.getElementById('skySelect');
@@ -85,3 +65,73 @@ function updateSky(sky) {
 skySelect.addEventListener('change', updateSky);
 
 updateSky();
+
+// wave 3 & 6
+document.addEventListener("DOMContentLoaded", () => {
+    const cityInput = document.getElementById("cityNameInput");
+    const cityDisplay = document.getElementById("headerCityName");
+    const resetButton = document.getElementById("cityNameReset");
+    const currentTempButton = document.getElementById("currentTempButton");
+
+    // Helper function to fetch location data
+    function getLocationData(cityName) {
+        return axios
+            .get(`http://localhost:5000/location`, {
+                params: { q: cityName },
+            })
+            .then((locationResponse) => {
+                if (!Array.isArray(locationResponse.data) || locationResponse.data.length === 0) {
+                    throw new Error("No valid location data found.");
+                }
+                return locationResponse.data[0]; // Return first valid location
+            });
+    }
+
+    // Function to convert Kelvin to Fahrenheit
+    function kelvinToFahrenheit(kelvin) {
+        return Math.round((kelvin - 273.15) * 9 / 5 + 32);
+    }
+
+    // Event listener for the 'currentTempButton'
+    currentTempButton.addEventListener("click", () => {
+        const cityName = cityDisplay.textContent.trim();
+        if (!cityName) {
+            alert("Please set a city name before fetching the temperature.");
+            return;
+        }
+
+        // Fetch location data and weather data
+        getLocationData(cityName)
+            .then((locationData) => {
+                const { lat, lon } = locationData;
+                return axios.get(`http://localhost:5000/weather`, {
+                    params: { lat, lon },
+                });
+            })
+            .then((weatherResponse) => {
+                const temperature = weatherResponse.data.main.temp;
+                currentTemp = kelvinToFahrenheit(temperature); // Convert from Kelvin to Fahrenheit
+                updateTemperature(); // Update UI with the new temperature
+            })
+            .catch((error) => {
+                alert("Could not fetch weather data. Please try again.");
+            });
+    });
+
+    // Event listener for the city input
+    cityInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            const cityName = cityInput.value;
+            cityDisplay.textContent = cityName;
+        }
+    });
+
+    // Event listener for the reset button
+    resetButton.addEventListener("click", () => {
+        cityInput.value = "";
+        cityDisplay.textContent = "";
+    });
+
+    // Initialize the temperature and landscape display
+    updateTemperature();
+});
