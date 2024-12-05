@@ -31,7 +31,11 @@
     <section class="sky__section">
         <h2>Sky</h2>
         <select id="skySelect">
-            <!-- sky options here -->
+            <option value="">--Please choose a sky--</option>
+            <option value="sunny">Sunny</option>
+            <option value="cloudy">Cloudy</option>
+            <option value="rainy">Rainy</option>
+            <option value="snowy">Snowy</option>
         </select>
     </section>
 
@@ -45,6 +49,7 @@
         <h2>Weather Garden</h2>
         <div id="gardenContent" class="garden__content">
             <div id="sky"></div>
+                <span id="skyDisplay"></span>
             <div id="landscape"></div>
                 <span id="landscapeDisplay"></span>
         </div>
