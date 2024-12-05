@@ -74,10 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 params: { q: cityName },
             })
             .then((locationResponse) => {
-                // Validate response and handle multiple objects
-                if (!Array.isArray(locationResponse.data) || locationResponse.data.length === 0) {
-                    throw new Error("No valid location data found.");
-                }
 
                 const firstLocation = locationResponse.data[0];
                 const { lat, lon } = firstLocation;
