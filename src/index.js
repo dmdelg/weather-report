@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Helper function to fetch location data
     function getLocationData(cityName) {
         return axios
-            .get(`http://localhost:5000/location`, {
+            .get(`https://weather-report-proxy-server-1.onrender.com/location`, {
                 params: { q: cityName },
             })
             .then((locationResponse) => {
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getLocationData(cityName)
             .then((locationData) => {
                 const { lat, lon } = locationData;
-                return axios.get(`http://localhost:5000/weather`, {
+                return axios.get(`https://weather-report-proxy-server-1.onrender.com/weather`, {
                     params: { lat, lon },
                 });
             })
